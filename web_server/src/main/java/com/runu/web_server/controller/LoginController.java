@@ -83,8 +83,16 @@ public class LoginController {
         rData.put("accessToken", jwt);
         rData.put("username", userData.getUserAccount());
         rData.put("nickname", userData.getUserName());
-        rData.put("roles",userData.getPowerCodes());
+        rData.put("roles", userData.getPowerCodes());
         rData.put("powers", userData.getPowerCodes());
+        rData.put("expires",
+                System.currentTimeMillis() +
+                        (
+                                jedisPool.getResource().ttl(
+                                        "pure:jwt:" + userData.getUserAccount()
+                                ) * 1000
+                        )
+        );
         return R.ok(rData);
     }
 

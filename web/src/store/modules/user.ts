@@ -26,7 +26,7 @@ export const useUserStore = defineStore({
     permissions:
       storageLocal().getItem<DataInfo<number>>(userKey)?.permissions ?? [],
     // 是否勾选了登录页的免登录
-    isRemembered: false,
+    isRemembered: true,
     // 登录页的免登录存储几天，默认7天
     loginDay: 7
   }),
@@ -88,7 +88,7 @@ export const useUserStore = defineStore({
     async handRefreshToken(data) {
       return new Promise<RefreshTokenResult>((resolve, reject) => {
         refreshTokenApi(data)
-          .then(data => {
+          .then((data: any) => {
             if (data) {
               setToken(data.data);
               resolve(data);
