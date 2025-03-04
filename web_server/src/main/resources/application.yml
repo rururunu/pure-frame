@@ -1,0 +1,23 @@
+server:
+  port: 18848
+  servlet:
+    context-path: /web_server
+
+# DataSource Config
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/pure_frame_database
+    username: root
+    password: 123456
+  redis:
+    host: 192.168.1.125
+    port: 6379
+    password: Redis_123456
+    database: 0
+    timeout: 10000ms
+    jedis:
+      pool:
+        max-active: 1024
+        max-wait: 10000ms
+        max-idle: 200
+        min-idle: 5
