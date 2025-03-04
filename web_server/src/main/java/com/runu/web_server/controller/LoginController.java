@@ -80,11 +80,11 @@ public class LoginController {
 
 
         JSONObject rData = new JSONObject();
-        rData.put("token", jwt);
+        rData.put("accessToken", jwt);
+        rData.put("username", userData.getUserAccount());
+        rData.put("nickname", userData.getUserName());
+        rData.put("roles",userData.getPowerCodes());
         rData.put("powers", userData.getPowerCodes());
-        rData.put("account", userData.getUserAccount());
-        rData.put("name", userData.getUserName());
-
         return R.ok(rData);
     }
 

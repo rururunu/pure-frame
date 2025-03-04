@@ -120,6 +120,10 @@ class PureHttp {
     const instance = PureHttp.axiosInstance;
     instance.interceptors.response.use(
       (response: PureHttpResponse) => {
+        if (response.status == 401 || response.data.code === 401) {
+          sessionStorage.clear();
+          useUserStoreHook().logOut();
+        }
         const $config = response.config;
         // 关闭进度条动画
         NProgress.done();
@@ -139,6 +143,10 @@ class PureHttp {
         $error.isCancelRequest = Axios.isCancel($error);
         // 关闭进度条动画
         NProgress.done();
+        if (error.status === 401) {
+          sessionStorage.clear();
+          useUserStoreHook().logOut();
+        }
         // 所有的响应异常 区分来源为取消请求/非取消请求
         return Promise.reject($error);
       }
