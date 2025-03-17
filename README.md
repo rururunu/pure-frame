@@ -25,7 +25,7 @@
 
 * 拉取下项目后，需要先进行 构建 等如下操作 才能使用  [mybatis-flex](https://github.com/mybatis-flex/mybatis-flex) 进行开发
 
-  ![build_project](https://github.com/rururunu/pure-frame/blob/4410a4dc2711a758fd89a2c85b55ba09510ab252/document/resource/build_project.png)
+  ![build_project](https://github.com/rururunu/pure-frame/blob/3920c6634dac86723937af2ee4c926dbf10f3d02/document/resource/build_project.png)
 
   ![mark_directory_as_generated_source_code](https://github.com/rururunu/pure-frame/blob/4410a4dc2711a758fd89a2c85b55ba09510ab252/document/resource/mark_directory_as_generated_source_code.png)
 
