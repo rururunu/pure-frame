@@ -35,10 +35,10 @@ public class PowerController {
                 R.error("操作权限失败");
     }
 
-    @DeleteMapping
+    @DeleteMapping("{id}")
     @PreAuthorize("hasAuthority('power:del')")
-    public R del(@RequestBody Power power) {
-        return powerService.delAndSupId(power);
+    public R del(@PathVariable Integer id) {
+        return powerService.delAndSupId(id);
     }
 
     @GetMapping("/tree")

@@ -26,10 +26,10 @@ public class RoleController {
                 R.error("操作失败");
     }
 
-    @DeleteMapping
+    @DeleteMapping("{id}")
     @PreAuthorize("hasAuthority('role:del')")
-    public R del(@RequestBody Role role) {
-        return roleService.removeById(role) ?
+    public R del(@PathVariable String id) {
+        return roleService.removeById(id) ?
                 R.ok("删除角色成功") :
                 R.error("删除角色失败");
     }
@@ -46,7 +46,7 @@ public class RoleController {
     public R getRoleById(@PathVariable String id) {
         return R.ok(
                 "获取角色信息成功",
-                roleService.getMapper().selectListWithRelationsByQuery(
+                roleService.getMapper().selectOneWithRelationsByQuery(
                         new QueryWrapper().where(ROLE.ROLE_ID.eq(id))
                 )
         );

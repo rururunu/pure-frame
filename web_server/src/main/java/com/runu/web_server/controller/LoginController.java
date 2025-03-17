@@ -2,7 +2,9 @@ package com.runu.web_server.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.mybatisflex.core.query.QueryWrapper;
 import com.runu.web_server.config.security.SecurityUserDetail;
+import com.runu.web_server.entity.Role;
 import com.runu.web_server.entity.User;
 import com.runu.web_server.service.IPowerService;
 import com.runu.web_server.service.IUserService;
@@ -18,7 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import redis.clients.jedis.JedisPool;
 
 import javax.annotation.Resource;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import static com.runu.web_server.entity.table.UserTableDef.USER;
 
@@ -56,9 +61,9 @@ public class LoginController {
 
         SecurityUserDetail userDetail = (SecurityUserDetail) authentication.getPrincipal();
 
-        User userData = userService.queryChain()
-                .where(USER.USER_ACCOUNT.eq(userDetail.getUsername()))
-                .one();
+        QueryWrapper qw = new QueryWrapper()
+                .where(USER.USER_ACCOUNT.eq(userDetail.getUsername()));
+        User userData = userService.getMapper().selectOneWithRelationsByQuery(qw);
         userData.setPowerCodes(
                 iPowerService.getPowersByUserId(
                         userData.getUserAccount()
@@ -70,7 +75,7 @@ public class LoginController {
 
         jedisPool.getResource().set(
                 "pure:jwt:" + userData.getUserAccount(),
-                JSON.toJSONString(userData)
+                JSON.toJSONString(userDetail)
         );
 
         jedisPool.getResource().expire(
@@ -78,13 +83,23 @@ public class LoginController {
                 24 * 60 * 60
         );
 
+        Set<String> powerAndRoleCode = powerRolesMerge(
+                userData.getPowerCodes(),
+                userData.getRoles()
+        );
 
         JSONObject rData = new JSONObject();
         rData.put("accessToken", jwt);
         rData.put("username", userData.getUserAccount());
         rData.put("nickname", userData.getUserName());
-        rData.put("roles", userData.getPowerCodes());
-        rData.put("powers", userData.getPowerCodes());
+        rData.put(
+                "roles",
+                powerAndRoleCode
+        );
+        rData.put(
+                "permissions",
+                powerAndRoleCode
+        );
         rData.put("expires",
                 System.currentTimeMillis() +
                         (
@@ -96,4 +111,10 @@ public class LoginController {
         return R.ok(rData);
     }
 
+
+    private Set<String> powerRolesMerge(List<String> powers, List<Role> roles) {
+        Set<String> powerRoles = new HashSet<>(powers);
+        roles.forEach(role -> powerRoles.add(role.getRoleCode()));
+        return powerRoles;
+    }
 }

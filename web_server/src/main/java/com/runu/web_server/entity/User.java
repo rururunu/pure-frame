@@ -32,7 +32,7 @@ public class User {
     private String userNewUserName;
 
     @Column(isLogicDelete = true)
-    private String userIsDelete;
+    private Boolean userIsDelete;
 
     private String userHead;
 

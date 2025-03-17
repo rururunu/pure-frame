@@ -5,12 +5,14 @@ import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.runu.web_server.entity.User;
 import com.runu.web_server.mapper.UserMapper;
+import com.runu.web_server.service.IPowerService;
 import com.runu.web_server.service.IUserService;
 import com.runu.web_server.tool.r.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.Date;
 
 import static com.runu.web_server.entity.table.UserTableDef.USER;
@@ -21,6 +23,9 @@ public class UserServiceImpl
         extends ServiceImpl<UserMapper, User>
         implements IUserService {
 
+    @Resource
+    private IPowerService powerService;
+
     @Override
     public User getValidUser(String account) {
         QueryWrapper queryWrapper = QueryWrapper.create()
@@ -28,7 +33,9 @@ public class UserServiceImpl
                 .where(
                         USER.USER_ACCOUNT.eq(account)
                 );
-        return mapper.selectOneByQuery(queryWrapper);
+        User user = mapper.selectOneWithRelationsByQuery(queryWrapper);
+        user.setPowerCodes(powerService.getPowersByUserId(account));
+        return user;
     }
 
     @Override
@@ -60,11 +67,12 @@ public class UserServiceImpl
     ) {
         QueryWrapper queryWrapper = new QueryWrapper()
                 .where(
-                        USER.USER_NAME.like("userName")
+                        USER.USER_NAME.like(userName)
                                 .or(
                                         USER.USER_PHONE.like(phone)
                                 )
-                );
+                )
+                .orderBy(USER.USER_NEW_DATE.asc());
         return mapper.paginateWithRelations(pageNum, pageSize, queryWrapper);
     }
 

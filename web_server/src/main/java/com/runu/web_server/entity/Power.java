@@ -4,7 +4,6 @@ import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-import com.mybatisflex.core.keygen.KeyGenerators;
 import lombok.*;
 
 import java.util.List;
@@ -17,17 +16,17 @@ import java.util.List;
 @Table("power")
 public class Power {
 
-    @Id(keyType = KeyType.Generator, value = KeyGenerators.uuid)
-    private String powerId;
+    @Id(keyType = KeyType.Auto)
+    private Integer powerId;
 
-    private String powerSupId;
+    private Integer powerSupId;
 
     private String powerCode;
 
     private String powerName;
 
     @Column(isLogicDelete = true)
-    private int isDelete;
+    private Boolean isDelete;
 
     @Column(ignore = true)
     private List<Power> children;

@@ -24,7 +24,7 @@ public class Role {
     private String note;
 
     @Column(isLogicDelete = true)
-    private int isDelete;
+    private Boolean isDelete;
 
     @RelationOneToMany(
             joinTable = "role_power",

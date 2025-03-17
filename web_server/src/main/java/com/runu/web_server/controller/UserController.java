@@ -62,15 +62,15 @@ public class UserController {
         return userService.setUser(user);
     }
 
-    @DeleteMapping
+    @DeleteMapping("{id}")
     @PreAuthorize("hasAuthority('user:del')")
-    public R delUser(@RequestBody User user) {
-        return userService.removeById(user) ?
+    public R delUser(@PathVariable String id) {
+        return userService.removeById(id) ?
                 R.ok("删除成功") :
                 R.error("删除失败");
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/byId/{id}")
     @PreAuthorize("hasAuthority('user')")
     public R getById(@PathVariable String id) {
         return R.ok(

@@ -11,7 +11,7 @@ public interface IPowerService extends IService<Power> {
 
     List<String> getPowersByUserId(String account);
 
-    R delAndSupId(Power power);
+    R delAndSupId(int id);
 
     List<Power> getTree();
 

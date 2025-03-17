@@ -1,27 +1,39 @@
 package com.runu.web_server.config.security;
 
 import com.runu.web_server.entity.User;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-@Setter
+@Data
 @EqualsAndHashCode
-@ToString
 public class SecurityUserDetail implements UserDetails {
 
     private User user;
 
-    private List<GrantedAuthority> authorities;
+    private Set<SimpleGrantedAuthority> authorities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
+        if (authorities != null) {
+            return authorities;
+        } else {
+            authorities = new HashSet<>();
+        }
+        user.getRoles().forEach(
+                role -> authorities.add(
+                        new SimpleGrantedAuthority(role.getRoleCode())
+                )
+        );
+        user.getPowerCodes().forEach(power -> authorities.add(new SimpleGrantedAuthority(power))
+        );
+        return authorities;
     }
 
     @Override

@@ -84,18 +84,20 @@ class PureHttp {
                 if (expired) {
                   if (!PureHttp.isRefreshing) {
                     PureHttp.isRefreshing = true;
+                    sessionStorage.clear();
+                    useUserStoreHook().logOut();
                     // token过期刷新
-                    useUserStoreHook()
-                      .handRefreshToken({ refreshToken: data.refreshToken })
-                      .then(res => {
-                        const token = res.data.accessToken;
-                        config.headers["Authorization"] = formatToken(token);
-                        PureHttp.requests.forEach(cb => cb(token));
-                        PureHttp.requests = [];
-                      })
-                      .finally(() => {
-                        PureHttp.isRefreshing = false;
-                      });
+                    // useUserStoreHook()
+                    //   .handRefreshToken({ refreshToken: data.refreshToken })
+                    //   .then(res => {
+                    //     const token = res.data.accessToken;
+                    //     config.headers["Authorization"] = formatToken(token);
+                    //     PureHttp.requests.forEach(cb => cb(token));
+                    //     PureHttp.requests = [];
+                    //   })
+                    //   .finally(() => {
+                    //     PureHttp.isRefreshing = false;
+                    //   });
                   }
                   resolve(PureHttp.retryOriginalRequest(config));
                 } else {

@@ -49,11 +49,14 @@ public class PowerServiceImpl
     }
 
     @Override
-    public R delAndSupId(Power power) {
+    public R delAndSupId(int id) {
+        Power power = getById(id);
         QueryWrapper qw = new QueryWrapper()
                 .where(
                         POWER.POWER_ID.eq(power.getPowerId())
-                                .or(POWER.POWER_ID.eq(power.getPowerSupId()))
+                                .or(
+                                        POWER.POWER_SUP_ID.eq(power.getPowerId())
+                                )
                 );
         return remove(qw) ?
                 R.ok("删除权限及子权限成功") :
@@ -71,7 +74,7 @@ public class PowerServiceImpl
     }
 
     private List<Power> toTreePower(List<Power> powers) {
-        Map<String, List<Power>> powerMap = powers
+        Map<Integer, List<Power>> powerMap = powers
                 .stream()
                 .collect(
                         Collectors.groupingBy(
@@ -84,8 +87,7 @@ public class PowerServiceImpl
         );
         return powers.stream()
                 .filter(item ->
-                        item.getPowerSupId() == null ||
-                                item.getPowerSupId().isEmpty()
+                        item.getPowerSupId() == 0
                 )
                 .collect(Collectors.toList());
     }
@@ -94,10 +96,10 @@ public class PowerServiceImpl
         List<ElTree> elTrees = powers.stream()
                 .map(power ->
                         ElTree.builder()
-                                .id(power.getPowerId())
-                                .supId(power.getPowerSupId())
+                                .id(String.valueOf(power.getPowerId()))
+                                .supId(String.valueOf(power.getPowerSupId()))
                                 .label(power.getPowerName())
-                                .value(power.getPowerId())
+                                .value(String.valueOf(power.getPowerId()))
                                 .build()
                 ).collect(Collectors.toList());
         elTrees.forEach(elTree -> elTree.setChildren(
@@ -110,7 +112,7 @@ public class PowerServiceImpl
         ));
         return elTrees.stream()
                 .filter(item ->
-                        item.getSupId() == null ||
+                        item.getSupId().equals("0") ||
                                 item.getSupId().isEmpty()
                 )
                 .collect(Collectors.toList());

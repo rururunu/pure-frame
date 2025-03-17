@@ -102,6 +102,9 @@ importers:
       '@iconify-icons/ri':
         specifier: ^1.2.10
         version: 1.2.10
+      '@iconify-icons/twemoji':
+        specifier: ^1.2.8
+        version: 1.2.8
       '@iconify/vue':
         specifier: ^4.2.0
         version: 4.2.0(vue@3.5.13(typescript@5.6.3))
@@ -694,6 +697,9 @@ packages:
 
   '@iconify-icons/ri@1.2.10':
     resolution: {integrity: sha512-wNaXsQYK55WDUWCbcjvnwnODV4Jtsp+VC0duPanibEVu876TUYf6kdgTGtH7/GErBCNdJuJJbncG7vbOaeQi7w==}
+
+  '@iconify-icons/twemoji@1.2.8':
+    resolution: {integrity: sha512-B12wK7BCloSuiemntXXoPRIQ+E/oZDBQNY6G9wRY4vHPESWpSaCM5fcaRUc8sE4zqiHvjA++oJt25ZJanD5j5Q==}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -4005,6 +4011,10 @@ snapshots:
       '@iconify/types': 2.0.0
 
   '@iconify-icons/ri@1.2.10':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-icons/twemoji@1.2.8':
     dependencies:
       '@iconify/types': 2.0.0
 

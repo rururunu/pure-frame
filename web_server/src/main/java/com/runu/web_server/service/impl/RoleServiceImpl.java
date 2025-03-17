@@ -18,7 +18,7 @@ public class RoleServiceImpl
     @Override
     public Page<Role> pageQuery(Integer pageSize, Integer pageNum, String roleName) {
         QueryWrapper queryWrapper = new QueryWrapper()
-                .where(ROLE.ROLE_NAME.eq(roleName));
+                .where(ROLE.ROLE_NAME.like(roleName));
         return mapper.paginateWithRelations(pageNum, pageSize, queryWrapper);
     }
 }
