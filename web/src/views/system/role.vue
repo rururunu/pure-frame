@@ -27,7 +27,7 @@
 
       <div class="pl-2 pr-2 float-right w-[20%] flex flex-row justify-end">
         <el-button
-          v-auth="'role:add'"
+          v-perms="'role:add'"
           type="success"
           :icon="CirclePlus"
           @click="add()"
@@ -58,27 +58,27 @@
             </template>
           </el-table-column>
           <el-table-column
-            v-auth="['role:set', 'role:del']"
+            v-perms-or="['role:set', 'role:del']"
             label="操作"
             width="400"
           >
             <template #default="{ row }">
               <el-button
-                v-auth="'role:set'"
+                v-perms="'role:set'"
                 :icon="Key"
                 type="primary"
                 @click="setRoleAuthority(row)"
                 >分配权限</el-button
               >
               <el-button
-                v-auth="'role:set'"
+                v-perms="'role:set'"
                 :icon="EditPen"
                 type="warning"
                 @click="setRole(row)"
                 >编辑</el-button
               >
               <el-button
-                v-auth="'role:del'"
+                v-perms="'role:del'"
                 :icon="Delete"
                 type="danger"
                 @click="del(row)"

@@ -48,7 +48,7 @@ public class PowerController {
     }
 
     @GetMapping("/elTree")
-    @PreAuthorize("hasAuthority('power')")
+    @PreAuthorize("hasAuthority('role')")
     public R getElTree() {
         return R.ok("获取成功", powerService.getElTree());
     }

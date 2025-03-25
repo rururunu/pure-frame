@@ -23,7 +23,7 @@
         </div>
         <div class="float-right">
           <el-button
-            v-auth="'user:add'"
+            v-perms="'user:add'"
             type="primary"
             :icon="CirclePlus"
             @click="addUser()"
@@ -87,14 +87,14 @@
               </template>
             </el-table-column>
             <el-table-column
-              v-auth="'user:set'"
+              v-perms-or="['user:set', 'user:del']"
               label="操作"
               fixed="right"
               width="300"
             >
               <template #default="{ row }">
                 <el-button
-                  v-auth="'user:set'"
+                  v-perms="['user:set']"
                   type="primary"
                   :icon="Connection"
                   size="small"
@@ -103,7 +103,7 @@
                   分配角色
                 </el-button>
                 <el-button
-                  v-auth="'user:set'"
+                  v-perms="['user:set']"
                   type="warning"
                   :icon="EditPen"
                   size="small"
@@ -112,7 +112,7 @@
                   编辑
                 </el-button>
                 <el-button
-                  v-auth="'user:del'"
+                  v-perms="['user:del']"
                   type="danger"
                   :icon="Delete"
                   size="small"
